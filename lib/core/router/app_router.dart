@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_tracker/core/storage/token_storage.dart';
 import 'package:food_tracker/modules/auth/screens/login_screen.dart';
+import 'package:food_tracker/modules/auth/screens/register_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -9,10 +10,15 @@ class AppRouter {
       initialLocation: '/',
       redirect: (context, state) async {
         final token = await TokenStorage.read();
+        debugPrint(token);
         final isAuth = token != null;
         final isAuthRoute =
             state.matchedLocation == '/login' ||
             state.matchedLocation == '/register';
+
+        if (state.matchedLocation == '/'){
+          return isAuth ? '/inventory' : '/login';
+        }
 
         if (!isAuth && !isAuthRoute) return '/login';
         if (isAuth && isAuthRoute) return '/inventory';
@@ -32,7 +38,7 @@ class AppRouter {
         ),
         GoRoute(
           path: '/register',
-          builder: (context, state) => const Placeholder(),
+          builder: (context, state) => const RegisterScreen(),
         ),
         GoRoute(
           path: '/inventory',
