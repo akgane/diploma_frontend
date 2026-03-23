@@ -1,3 +1,4 @@
+import 'package:food_tracker/modules/inventory/screens/inventory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:food_tracker/core/storage/token_storage.dart';
 import 'package:food_tracker/modules/auth/screens/login_screen.dart';
@@ -42,7 +43,7 @@ class AppRouter {
         ),
         GoRoute(
           path: '/inventory',
-          builder: (context, state) => const Placeholder(),
+          builder: (context, state) => const InventoryScreen(),
         ),
         GoRoute(
           path: '/scanner',
