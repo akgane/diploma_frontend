@@ -1,4 +1,4 @@
-// Enum единиц измерения — точно соответствует UnitEnum в API
+// Units enum — matches UnitEnum from API
 enum UnitEnum {
   g,
   kg,
@@ -131,7 +131,7 @@ class InventoryItem {
     required this.updatedAt,
   });
 
-  String get displayName => customName ?? barcode ?? 'Без названия';
+  String get displayName => customName ?? barcode ?? 'Untitled';
 
   int get daysUntilExpiry {
     final now = DateTime.now();
