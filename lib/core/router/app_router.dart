@@ -1,4 +1,3 @@
-import 'package:food_tracker/modules/inventory/screens/inventory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:food_tracker/core/storage/token_storage.dart';
 import 'package:food_tracker/modules/auth/screens/login_screen.dart';

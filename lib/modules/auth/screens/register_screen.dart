@@ -68,7 +68,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         ).showSnackBar(SnackBar(content: Text(error.toString())));
       }
     } else {
-      if (mounted) context.go('/inventory');
+      if (mounted) context.go('/home');
     }
   }
 

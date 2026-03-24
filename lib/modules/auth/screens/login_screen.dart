@@ -38,7 +38,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
       }
     }else{
-      if(mounted) context.go('/inventory');
+      if(mounted) context.go('/home');
     }
   }
 

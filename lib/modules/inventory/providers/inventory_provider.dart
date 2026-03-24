@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/core/api/providers.dart';
 import 'package:food_tracker/modules/inventory/data/inventory_api.dart';
@@ -46,6 +47,7 @@ class InventoryNotifier extends AsyncNotifier<InventoryState> {
       api.getInventory(),
       api.getStats(),
     ]);
+
     return InventoryState(
       items: results[0] as List<InventoryItem>,
       stats: results[1] as InventoryStats,

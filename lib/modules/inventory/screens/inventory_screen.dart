@@ -72,6 +72,7 @@ class InventoryScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'add_item_fab',
         onPressed: () => showModalBottomSheet(
           context: context,
           isScrollControlled: true,
