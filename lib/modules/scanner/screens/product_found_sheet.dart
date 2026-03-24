@@ -38,31 +38,33 @@ class _ProductFoundSheetState extends ConsumerState<ProductFoundSheet> {
   Future<void> _submit() async {
     final amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a valid quantity')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Enter a valid quantity')));
       return;
     }
 
     setState(() => _isLoading = true);
 
     try {
-      await ref.read(inventoryProvider.notifier).addItem(
-        AddInventoryItemRequest(
-          productId: widget.product.id,
-          barcode: widget.product.barcode,
-          customName: widget.product.name,
-          amount: amount,
-          unit: _selectedUnit,
-          expirationDate: _expirationDate,
-        ),
-      );
+      await ref
+          .read(inventoryProvider.notifier)
+          .addItem(
+            AddInventoryItemRequest(
+              productId: widget.product.id,
+              barcode: widget.product.barcode,
+              customName: widget.product.name,
+              amount: amount,
+              unit: _selectedUnit,
+              expirationDate: _expirationDate,
+            ),
+          );
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -131,26 +133,35 @@ class _ProductFoundSheetState extends ConsumerState<ProductFoundSheet> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          product.name,
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
+                        TextField(
+                          controller: TextEditingController(text: product.name),
+                          decoration: const InputDecoration(
+                            labelText: 'Product name *',
+                            border: OutlineInputBorder(),
+                            // prefixIcon: Icon(Icons.fastfood_outlined),
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          // style: theme.textTheme.bodyLarge?.copyWith(
+                          //   fontWeight: FontWeight.w600,
+                          // ),
+                          // maxLines: 2,
+                          // overflow: TextOverflow.ellipsis,
                         ),
                         if (product.brand != null)
                           Text(
                             product.brand!,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              color: theme.colorScheme.onSurface.withOpacity(
+                                0.6,
+                              ),
                             ),
                           ),
                         if (product.quantity != null)
                           Text(
                             product.quantity!,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              color: theme.colorScheme.onSurface.withOpacity(
+                                0.6,
+                              ),
                             ),
                           ),
                       ],
@@ -168,7 +179,9 @@ class _ProductFoundSheetState extends ConsumerState<ProductFoundSheet> {
                   flex: 2,
                   child: TextField(
                     controller: _amountController,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     decoration: const InputDecoration(
                       labelText: 'Quantity *',
                       border: OutlineInputBorder(),
@@ -184,10 +197,15 @@ class _ProductFoundSheetState extends ConsumerState<ProductFoundSheet> {
                       labelText: 'Unit',
                       border: OutlineInputBorder(),
                     ),
-                    items: UnitEnum.values.map((u) => DropdownMenuItem(
-                      value: u,
-                      child: Text(u.label),
-                    )).toList(),
+                    items:
+                        UnitEnum.values
+                            .map(
+                              (u) => DropdownMenuItem(
+                                value: u,
+                                child: Text(u.label),
+                              ),
+                            )
+                            .toList(),
                     onChanged: (v) => setState(() => _selectedUnit = v!),
                   ),
                 ),
@@ -223,13 +241,17 @@ class _ProductFoundSheetState extends ConsumerState<ProductFoundSheet> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Text('Add to inventory', style: TextStyle(fontSize: 16)),
+                child:
+                    _isLoading
+                        ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                        : const Text(
+                          'Add to inventory',
+                          style: TextStyle(fontSize: 16),
+                        ),
               ),
             ),
           ],
