@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_tracker/core/storage/token_storage.dart';
 import 'package:food_tracker/modules/auth/screens/login_screen.dart';
 import 'package:food_tracker/modules/auth/screens/register_screen.dart';
+import 'package:food_tracker/modules/shell/shell_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -18,11 +19,11 @@ class AppRouter {
             state.matchedLocation == '/register';
 
         if (state.matchedLocation == '/'){
-          return isAuth ? '/inventory' : '/login';
+          return isAuth ? '/home' : '/login';
         }
 
         if (!isAuth && !isAuthRoute) return '/login';
-        if (isAuth && isAuthRoute) return '/inventory';
+        if (isAuth && isAuthRoute) return '/home';
         return null;
       },
       routes: [
@@ -42,20 +43,8 @@ class AppRouter {
           builder: (context, state) => const RegisterScreen(),
         ),
         GoRoute(
-          path: '/inventory',
-          builder: (context, state) => const InventoryScreen(),
-        ),
-        GoRoute(
-          path: '/scanner',
-          builder: (context, state) => const Placeholder(),
-        ),
-        GoRoute(
-          path: '/recipes',
-          builder: (context, state) => const Placeholder(),
-        ),
-        GoRoute(
-          path: '/shopping-list',
-          builder: (context, state) => const Placeholder(),
+          path: '/home',
+          builder: (context, state) => const ShellScreen(),
         ),
       ],
     );
