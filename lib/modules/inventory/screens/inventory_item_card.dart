@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/modules/inventory/data/inventory_models.dart';
 import 'package:food_tracker/modules/inventory/providers/inventory_provider.dart';
+import 'package:food_tracker/modules/inventory/screens/edit_item_sheet.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class InventoryItemCard extends ConsumerWidget {
   final InventoryItem item;
@@ -23,7 +26,7 @@ class InventoryItemCard extends ConsumerWidget {
       statusIcon = Icons.warning_amber_rounded;
     } else if (item.isExpiringSoon) {
       statusColor = Colors.orange;
-      statusLabel = days == 0 ? 'Expires today' : 'In $days days';
+      statusLabel = days == 0 ? 'Today' : 'In $days days';
       statusIcon = Icons.access_time_rounded;
     } else {
       statusColor = Colors.green;
@@ -47,7 +50,9 @@ class InventoryItemCard extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Category emoji icon
               Container(
                 width: 44,
                 height: 44,
@@ -56,17 +61,17 @@ class InventoryItemCard extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
-                  child: Text(
-                    _categoryEmoji(item.category),
-                    style: const TextStyle(fontSize: 22),
-                  ),
+                  child: _categoryIcon(item.category, statusColor)
                 ),
               ),
               const SizedBox(width: 12),
+
+              // Main content
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Product name
                     Text(
                       item.displayName,
                       style: theme.textTheme.bodyLarge?.copyWith(
@@ -76,16 +81,77 @@ class InventoryItemCard extends ConsumerWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
+
+                    // Amount + unit
                     Text(
-                      '${item.amount % 1 == 0 ? item.amount.toInt() : item.amount} ${UnitEnum.fromString(item.unit).label}'
-                          '${item.location != null ? ' · ${item.location}' : ''}',
+                      '${item.amount % 1 == 0 ? item.amount.toInt() : item.amount}'
+                      ' ${UnitEnum.fromString(item.unit).label}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                    ),
+
+                    // Location (if set)
+                    if (item.location != null) ...[
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.place_outlined,
+                            size: 12,
+                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                          ),
+                          const SizedBox(width: 3),
+                          Text(
+                            item.location!,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+
+                    // Notes (if set)
+                    if (item.notes != null && item.notes!.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.notes_outlined,
+                            size: 12,
+                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                          ),
+                          const SizedBox(width: 3),
+                          Expanded(
+                            child: Text(
+                              item.notes!,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurface.withOpacity(0.5),
+                                fontStyle: FontStyle.italic,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+
+                    // Added at date
+                    const SizedBox(height: 4),
+                    Text(
+                      'Added ${DateFormat('dd MMM yyyy').format(item.addedAt.toLocal())}',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withOpacity(0.35),
+                        fontSize: 10,
                       ),
                     ),
                   ],
                 ),
               ),
+
+              // Status badge (right side)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -128,9 +194,28 @@ class InventoryItemCard extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 8),
+
+            // Edit
+            ListTile(
+              leading: const Icon(Icons.edit_outlined, color: Colors.blue),
+              title: const Text('Edit'),
+              onTap: () {
+                Navigator.of(context).pop();
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  builder: (_) => EditItemSheet(item: item),
+                );
+              },
+            ),
+
+            // Mark as consumed
             ListTile(
               leading: const Icon(Icons.check_circle_outline, color: Colors.green),
-              title: const Text('Used'),
+              title: const Text('Mark as used'),
               onTap: () async {
                 Navigator.of(context).pop();
                 try {
@@ -144,6 +229,8 @@ class InventoryItemCard extends ConsumerWidget {
                 }
               },
             ),
+
+            // Delete
             ListTile(
               leading: const Icon(Icons.delete_outline, color: Colors.red),
               title: const Text('Delete'),
@@ -153,7 +240,9 @@ class InventoryItemCard extends ConsumerWidget {
                   context: context,
                   builder: (ctx) => AlertDialog(
                     title: const Text('Delete the product?'),
-                    content: Text('«${item.displayName}» it will be removed from the inventory.'),
+                    content: Text(
+                      '«${item.displayName}» will be removed from the inventory.',
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(ctx).pop(false),
@@ -161,8 +250,10 @@ class InventoryItemCard extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () => Navigator.of(ctx).pop(true),
-                        child: const Text('Delete',
-                            style: TextStyle(color: Colors.red)),
+                        child: const Text(
+                          'Delete',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ],
                   ),
@@ -187,18 +278,23 @@ class InventoryItemCard extends ConsumerWidget {
     );
   }
 
-  String _categoryEmoji(String? category) {
-    const map = {
-      'dairy': '🥛',
-      'meat': '🥩',
-      'fish': '🐟',
-      'vegetables': '🥦',
-      'fruits': '🍎',
-      'bakery': '🍞',
-      'drinks': '🧃',
-      'frozen': '🧊',
-      'snacks': '🍿',
-    };
-    return map[category] ?? '🛒';
-  }
+  Widget _categoryIcon(String? category, Color color) {
+  const map = {
+    'dairy':      FontAwesomeIcons.cow,
+    'meat':       FontAwesomeIcons.drumstickBite,
+    'fish':       FontAwesomeIcons.fish,
+    'vegetables': FontAwesomeIcons.carrot,
+    'fruits':     FontAwesomeIcons.appleWhole,
+    'bakery':     FontAwesomeIcons.breadSlice,
+    'drinks':     FontAwesomeIcons.wineBottle,
+    'frozen':     FontAwesomeIcons.snowflake,
+    'snacks':     FontAwesomeIcons.cookieBite,
+  };
+
+  return FaIcon(
+    map[category] ?? FontAwesomeIcons.cartShopping,
+    size: 20,
+    color: color,
+  );
+}
 }
