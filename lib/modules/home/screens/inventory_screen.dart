@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/modules/auth/providers/auth_provider.dart';
 import 'package:food_tracker/modules/inventory/data/inventory_models.dart';
 import 'package:food_tracker/modules/inventory/providers/inventory_provider.dart';
-import 'package:food_tracker/modules/home/screens/add_item_sheet.dart';
-import 'package:food_tracker/modules/home/screens/inventory_item_card.dart';
+import 'package:food_tracker/modules/inventory/screens/add_item_sheet.dart';
+import 'package:food_tracker/modules/inventory/screens/inventory_item_card.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+class InventoryScreen extends ConsumerWidget {
+  const InventoryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Home',
+          'My Fridge',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [

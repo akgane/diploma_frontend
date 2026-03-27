@@ -4,6 +4,7 @@ import 'package:food_tracker/modules/inventory/screens/inventory_screen.dart';
 import 'package:food_tracker/modules/recipes/screens/recipes_screen.dart';
 import 'package:food_tracker/modules/scanner/screens/scanner_screen.dart';
 import 'package:food_tracker/modules/settings/screens/settings_screen.dart';
+import 'package:food_tracker/modules/statistics/screens/statistics_screen.dart';
 
 class ShellScreen extends StatefulWidget {
   const ShellScreen({super.key});
@@ -17,7 +18,7 @@ class _ShellScreenState extends State<ShellScreen> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    InventoryScreen(),
+    StatisticsScreen(),
     RecipesScreen(),
     SettingsScreen()
   ];
@@ -49,7 +50,7 @@ class _ShellScreenState extends State<ShellScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _NavItem(icon: Icons.home_outlined, selectedIcon: Icons.home, label: 'Home', index: 0, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),
-            _NavItem(icon: Icons.kitchen_outlined, selectedIcon: Icons.kitchen, label: 'Inventory', index: 1, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),
+            _NavItem(icon: Icons.bar_chart_outlined, selectedIcon: Icons.bar_chart, label: 'Stats', index: 1, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),
             const SizedBox(width: 48), // for FAB
             _NavItem(icon: Icons.menu_book_outlined, selectedIcon: Icons.menu_book, label: 'Recipes', index: 2, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),
             _NavItem(icon: Icons.settings_outlined, selectedIcon: Icons.settings, label: 'Settings', index: 3, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),

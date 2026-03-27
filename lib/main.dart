@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/core/router/app_router.dart';
 import 'package:food_tracker/modules/settings/providers/settings_provider.dart';
-import 'package:go_router/go_router.dart';
 
 void main() {
   runApp(
@@ -12,7 +11,7 @@ void main() {
   );
 }
 
-// Роутер создаётся один раз на уровне приложения
+// Single router for whole application
 final _router = AppRouter.createRouter();
 
 class MyApp extends ConsumerWidget {

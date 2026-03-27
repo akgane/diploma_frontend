@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/modules/auth/providers/auth_provider.dart';
 import 'package:go_router/go_router.dart';
@@ -87,7 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onPressed: isLoading ? null : _login,
                   child: isLoading
                       ? const CircularProgressIndicator()
-                      : const Text('Войти'),
+                      : const Text('Login'),
                 ),
               ),
               TextButton(
