@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "64500882300",
+    "project_id": "diploma-37e65",
+    "storage_bucket": "diploma-37e65.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64500882300:android:efbd1e3093ebb0de49e2f9",
+        "android_client_info": {
+          "package_name": "com.example.food_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_bp08K3c1EalApkjZHvng0seJkT63k4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

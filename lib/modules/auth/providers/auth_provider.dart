@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/core/api/providers.dart';
+import 'package:food_tracker/core/fcm/fcm_provider.dart';
 import 'package:food_tracker/core/storage/token_storage.dart';
 import 'package:food_tracker/modules/auth/data/auth_api.dart';
 import 'package:food_tracker/modules/auth/data/auth_models.dart';
@@ -22,6 +23,9 @@ class AuthNotifier extends AsyncNotifier<bool> {
       final api = ref.read(authApiProvider);
       final response = await api.login(LoginRequest(email: email, password: password));
       await TokenStorage.save(response.accessToken);
+
+      await ref.read(fcmServiceProvider).registerToken();
+
       return true;
     });
   }
@@ -32,6 +36,9 @@ class AuthNotifier extends AsyncNotifier<bool> {
       final api = ref.read(authApiProvider);
       final response = await api.register(RegisterRequest(name: name, email: email, password: password));
       await TokenStorage.save(response.accessToken);
+      
+      await ref.read(fcmServiceProvider).registerToken();
+
       return true;
     });
   }
