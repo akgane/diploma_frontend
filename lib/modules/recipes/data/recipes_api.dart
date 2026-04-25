@@ -6,19 +6,17 @@ class RecipesApi {
 
   RecipesApi(this._dio);
 
+  /// Requests recipe recommendations based on the user's current inventory.
+  /// The backend fetches the user's products directly — no need to pass them here.
   Future<List<RecipeRecommendation>> getRecommendedRecipes({
-    required List<String> ingredients,
-    Map<String, List<String>> tagsMap = const {},
     String strategy = 'soft',
-    int number = 5,
+    int number = 10,
   }) async {
-    if (ingredients.isEmpty) return [];
+    if (number <= 0) return [];
 
     final response = await _dio.post(
       '/api/v1/recipes/by-ingredients',
       data: {
-        'ingredients': ingredients,
-        'tags_map': tagsMap,
         'strategy': strategy,
         'number': number,
       },
