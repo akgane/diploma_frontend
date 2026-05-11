@@ -6,8 +6,6 @@ class RecipesApi {
 
   RecipesApi(this._dio);
 
-  /// Requests recipe recommendations based on the user's current inventory.
-  /// The backend fetches the user's products directly — no need to pass them here.
   Future<List<RecipeRecommendation>> getRecommendedRecipes({
     String strategy = 'soft',
     int number = 10,
@@ -16,10 +14,7 @@ class RecipesApi {
 
     final response = await _dio.post(
       '/api/v1/recipes/by-ingredients',
-      data: {
-        'strategy': strategy,
-        'number': number,
-      },
+      data: {'strategy': strategy, 'number': number},
     );
 
     final data = response.data;
@@ -29,5 +24,11 @@ class RecipesApi {
         .whereType<Map<String, dynamic>>()
         .map(RecipeRecommendation.fromJson)
         .toList();
+  }
+
+  Future<RecipeDetail> getRecipeDetail(int spoonacularId) async {
+    final response =
+    await _dio.get('/api/v1/recipes/$spoonacularId');
+    return RecipeDetail.fromJson(response.data as Map<String, dynamic>);
   }
 }

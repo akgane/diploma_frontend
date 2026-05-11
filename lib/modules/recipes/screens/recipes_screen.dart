@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/modules/recipes/data/recipes_models.dart';
 import 'package:food_tracker/modules/recipes/providers/recipes_provider.dart';
+import 'package:food_tracker/modules/recipes/screens/recipe_detail_screen.dart';
 
 class RecipesScreen extends ConsumerWidget {
   const RecipesScreen({super.key});
@@ -26,26 +27,23 @@ class RecipesScreen extends ConsumerWidget {
       ),
       body: recipesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error:
-            (e, _) => _RecipesError(
-              message: e.toString(),
-              onRetry: () => ref.invalidate(recommendedRecipesProvider),
-            ),
+        error: (e, _) => _RecipesError(
+          message: e.toString(),
+          onRetry: () => ref.invalidate(recommendedRecipesProvider),
+        ),
         data: (recipes) {
-          if (recipes.isEmpty) {
-            return const _RecipesEmptyState();
-          }
+          if (recipes.isEmpty) return const _RecipesEmptyState();
 
           return RefreshIndicator(
-            onRefresh:
-                () async => ref.refresh(recommendedRecipesProvider.future),
+            onRefresh: () async =>
+                ref.refresh(recommendedRecipesProvider.future),
             child: ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
               itemCount: recipes.length,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder:
-                  (context, index) => _RecipeCard(recipe: recipes[index]),
+              itemBuilder: (context, index) =>
+                  _RecipeCard(recipe: recipes[index]),
             ),
           );
         },
@@ -61,43 +59,66 @@ class _RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child:
-                recipe.image.isNotEmpty
-                    ? Image.network(
-                      recipe.image,
-                      fit: BoxFit.cover,
-                      errorBuilder:
-                          (_, __, ___) => const _RecipeImagePlaceholder(),
-                    )
-                    : const _RecipeImagePlaceholder(),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => RecipeDetailScreen(recipe: recipe),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  recipe.title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'ID: ${recipe.spoonacularId}',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: Colors.grey.shade600),
-                ),
-              ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: recipe.image.isNotEmpty
+                  ? Image.network(
+                recipe.image,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                const _RecipeImagePlaceholder(),
+              )
+                  : const _RecipeImagePlaceholder(),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      recipe.title,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  if (recipe.matchScore > 0) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: Colors.green.withOpacity(0.3)),
+                      ),
+                      child: Text(
+                        '${recipe.matchScore.toInt()}% match',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.green,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -108,9 +129,9 @@ class _RecipeImagePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
+    return const ColoredBox(
       color: Colors.black12,
-      child: const Center(
+      child: Center(
         child: Icon(Icons.image_not_supported_outlined, size: 32),
       ),
     );

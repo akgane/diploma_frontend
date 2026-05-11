@@ -8,11 +8,14 @@ final recipesApiProvider = Provider<RecipesApi>((ref) {
   return RecipesApi(dio);
 });
 
-/// Fetches recipe recommendations for the current user.
-/// The backend resolves the user's inventory automatically via the auth token —
-/// no need to pass ingredients from the client side.
 final recommendedRecipesProvider =
-    FutureProvider<List<RecipeRecommendation>>((ref) async {
+FutureProvider<List<RecipeRecommendation>>((ref) async {
   final api = ref.read(recipesApiProvider);
   return api.getRecommendedRecipes(number: 10);
+});
+
+final recipeDetailProvider =
+FutureProvider.family<RecipeDetail, int>((ref, spoonacularId) async {
+  final api = ref.read(recipesApiProvider);
+  return api.getRecipeDetail(spoonacularId);
 });
