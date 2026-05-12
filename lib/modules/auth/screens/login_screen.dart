@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:food_tracker/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/modules/auth/providers/auth_provider.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends ConsumerStatefulWidget{
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
@@ -23,28 +24,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _login() async {
+    final l = AppLocalizations.of(context)!;
     await ref.read(authProvider.notifier).login(
       _emailController.text.trim(),
-      _passwordController.text
+      _passwordController.text,
     );
-
     if (ref.read(authProvider).hasError) {
-      // final error = ref.read(authProvider).error;
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Invalid email or password"))
-          // SnackBar(content: Text(error.toString()))
+          SnackBar(content: Text(l.invalidEmailOrPassword)),
         );
       }
-    }else{
-      if(mounted) context.go('/home');
+    } else {
+      if (mounted) context.go('/home');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authProvider);
-    final isLoading = authState.isLoading;
+    final l = AppLocalizations.of(context)!;
+    final isLoading = ref.watch(authProvider).isLoading;
 
     return Scaffold(
       body: SafeArea(
@@ -53,25 +52,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Food Tracker',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
+              Text(l.appTitle, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
               const SizedBox(height: 40),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: InputDecoration(labelText: l.email, border: const OutlineInputBorder()),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: l.password,
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
@@ -84,14 +77,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: isLoading ? null : _login,
-                  child: isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('Login'),
+                  child: isLoading ? const CircularProgressIndicator() : Text(l.login),
                 ),
               ),
               TextButton(
                 onPressed: () => context.go('/register'),
-                child: const Text('Not registered yet?'),
+                child: Text(l.notRegistered),
               ),
             ],
           ),

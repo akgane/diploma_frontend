@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_tracker/l10n/app_localizations.dart';
 import 'package:food_tracker/modules/home/screens/home_screen.dart';
 import 'package:food_tracker/modules/recipes/screens/recipes_screen.dart';
 import 'package:food_tracker/modules/scanner/screens/scanner_screen.dart';
@@ -30,11 +31,9 @@ class _ShellScreenState extends State<ShellScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       floatingActionButton: FloatingActionButton(
         heroTag: 'scanner_fab',
         onPressed: _openScanner,
@@ -48,39 +47,11 @@ class _ShellScreenState extends State<ShellScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _NavItem(
-              icon: Icons.home_outlined,
-              selectedIcon: Icons.home,
-              label: 'Home',
-              index: 0,
-              currentIndex: _currentIndex,
-              onTap: (i) => setState(() => _currentIndex = i),
-            ),
-            _NavItem(
-              icon: Icons.shopping_cart_outlined,
-              selectedIcon: Icons.shopping_cart,
-              label: 'Shopping',
-              index: 1,
-              currentIndex: _currentIndex,
-              onTap: (i) => setState(() => _currentIndex = i),
-            ),
-            const SizedBox(width: 48), // for FAB
-            _NavItem(
-              icon: Icons.menu_book_outlined,
-              selectedIcon: Icons.menu_book,
-              label: 'Recipes',
-              index: 2,
-              currentIndex: _currentIndex,
-              onTap: (i) => setState(() => _currentIndex = i),
-            ),
-            _NavItem(
-              icon: Icons.settings_outlined,
-              selectedIcon: Icons.settings,
-              label: 'Settings',
-              index: 3,
-              currentIndex: _currentIndex,
-              onTap: (i) => setState(() => _currentIndex = i),
-            ),
+            _NavItem(icon: Icons.home_outlined, selectedIcon: Icons.home, label: l.navHome, index: 0, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),
+            _NavItem(icon: Icons.shopping_cart_outlined, selectedIcon: Icons.shopping_cart, label: l.navShopping, index: 1, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),
+            const SizedBox(width: 48),
+            _NavItem(icon: Icons.menu_book_outlined, selectedIcon: Icons.menu_book, label: l.navRecipes, index: 2, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),
+            _NavItem(icon: Icons.settings_outlined, selectedIcon: Icons.settings, label: l.navSettings, index: 3, currentIndex: _currentIndex, onTap: (i) => setState(() => _currentIndex = i)),
           ],
         ),
       ),
@@ -96,22 +67,12 @@ class _NavItem extends StatelessWidget {
   final int currentIndex;
   final void Function(int) onTap;
 
-  const _NavItem({
-    required this.icon,
-    required this.selectedIcon,
-    required this.label,
-    required this.index,
-    required this.currentIndex,
-    required this.onTap,
-  });
+  const _NavItem({required this.icon, required this.selectedIcon, required this.label, required this.index, required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final isSelected = index == currentIndex;
-    final color = isSelected
-        ? Theme.of(context).colorScheme.primary
-        : Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
-
+    final color = isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
     return InkWell(
       onTap: () => onTap(index),
       borderRadius: BorderRadius.circular(12),

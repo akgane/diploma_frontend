@@ -1,49 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:food_tracker/modules/recipes/screens/recipe_detail_screen.dart';
+import 'package:food_tracker/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_tracker/modules/inventory/providers/inventory_provider.dart';
 import 'package:food_tracker/modules/recipes/data/recipes_models.dart';
 import 'package:food_tracker/modules/recipes/providers/recipes_provider.dart';
-import 'package:food_tracker/modules/recipes/screens/recipe_detail_screen.dart';
+import 'package:food_tracker/modules/shopping_list/data/shopping_list_models.dart';
+import 'package:food_tracker/modules/shopping_list/providers/shopping_list_provider.dart';
+
+// ─── Recipes Screen ───────────────────────────────────────────────────────────
 
 class RecipesScreen extends ConsumerWidget {
   const RecipesScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final recipesAsync = ref.watch(recommendedRecipesProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Recommended recipes',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text(l.recommendedRecipes, style: const TextStyle(fontWeight: FontWeight.bold)),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Refresh',
-            onPressed: () => ref.invalidate(recommendedRecipesProvider),
-          ),
+          IconButton(icon: const Icon(Icons.refresh), tooltip: l.refresh, onPressed: () => ref.invalidate(recommendedRecipesProvider)),
         ],
       ),
       body: recipesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => _RecipesError(
-          message: e.toString(),
-          onRetry: () => ref.invalidate(recommendedRecipesProvider),
-        ),
+        error: (e, _) => _RecipesError(message: e.toString(), onRetry: () => ref.invalidate(recommendedRecipesProvider)),
         data: (recipes) {
           if (recipes.isEmpty) return const _RecipesEmptyState();
-
           return RefreshIndicator(
-            onRefresh: () async =>
-                ref.refresh(recommendedRecipesProvider.future),
+            onRefresh: () async => ref.refresh(recommendedRecipesProvider.future),
             child: ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
               itemCount: recipes.length,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder: (context, index) =>
-                  _RecipeCard(recipe: recipes[index]),
+              itemBuilder: (context, index) => _RecipeCard(recipe: recipes[index]),
             ),
           );
         },
@@ -54,64 +48,36 @@ class RecipesScreen extends ConsumerWidget {
 
 class _RecipeCard extends StatelessWidget {
   final RecipeRecommendation recipe;
-
   const _RecipeCard({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => RecipeDetailScreen(recipe: recipe),
-          ),
-        ),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => RecipeDetailScreen(recipe: recipe))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AspectRatio(
               aspectRatio: 16 / 9,
               child: recipe.image.isNotEmpty
-                  ? Image.network(
-                recipe.image,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                const _RecipeImagePlaceholder(),
-              )
+                  ? Image.network(recipe.image, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const _RecipeImagePlaceholder())
                   : const _RecipeImagePlaceholder(),
             ),
             Padding(
               padding: const EdgeInsets.all(12),
               child: Row(
                 children: [
-                  Expanded(
-                    child: Text(
-                      recipe.title,
-                      style: theme.textTheme.titleMedium,
-                    ),
-                  ),
+                  Expanded(child: Text(recipe.title, style: theme.textTheme.titleMedium)),
                   if (recipe.matchScore > 0) ...[
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                            color: Colors.green.withOpacity(0.3)),
-                      ),
-                      child: Text(
-                        '${recipe.matchScore.toInt()}% match',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: Colors.green,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.green.withOpacity(0.3))),
+                      child: Text(l.matchPercent(recipe.matchScore.toInt()), style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.w600)),
                     ),
                   ],
                 ],
@@ -126,81 +92,41 @@ class _RecipeCard extends StatelessWidget {
 
 class _RecipeImagePlaceholder extends StatelessWidget {
   const _RecipeImagePlaceholder();
-
   @override
-  Widget build(BuildContext context) {
-    return const ColoredBox(
-      color: Colors.black12,
-      child: Center(
-        child: Icon(Icons.image_not_supported_outlined, size: 32),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => const ColoredBox(color: Colors.black12, child: Center(child: Icon(Icons.image_not_supported_outlined, size: 32)));
 }
 
 class _RecipesEmptyState extends StatelessWidget {
   const _RecipesEmptyState();
-
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.menu_book_outlined, size: 56, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              'No recommendations yet',
-              style: Theme.of(context).textTheme.titleMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Add products to inventory to see recipe recommendations.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    );
+    final l = AppLocalizations.of(context)!;
+    return Center(child: Padding(padding: const EdgeInsets.all(24), child: Column(mainAxisSize: MainAxisSize.min, children: [
+      const Icon(Icons.menu_book_outlined, size: 56, color: Colors.grey),
+      const SizedBox(height: 16),
+      Text(l.noRecommendationsYet, style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
+      const SizedBox(height: 8),
+      Text(l.addProductsForRecipes, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey)),
+    ])));
   }
 }
 
 class _RecipesError extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
-
   const _RecipesError({required this.message, required this.onRetry});
-
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.error_outline, size: 48, color: Colors.red),
-            const SizedBox(height: 12),
-            Text(
-              'Could not load recipes',
-              style: Theme.of(context).textTheme.titleMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 12),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
-          ],
-        ),
-      ),
-    );
+    final l = AppLocalizations.of(context)!;
+    return Center(child: Padding(padding: const EdgeInsets.all(24), child: Column(mainAxisSize: MainAxisSize.min, children: [
+      const Icon(Icons.error_outline, size: 48, color: Colors.red),
+      const SizedBox(height: 12),
+      Text(l.couldNotLoadRecipes, style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
+      const SizedBox(height: 8),
+      Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12)),
+      const SizedBox(height: 16),
+      ElevatedButton(onPressed: onRetry, child: Text(l.retry)),
+    ])));
   }
 }
+

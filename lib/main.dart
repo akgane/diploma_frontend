@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/core/fcm/fcm_provider.dart';
 import 'package:food_tracker/core/router/app_router.dart';
+import 'package:food_tracker/l10n/app_localizations.dart';
 import 'package:food_tracker/modules/settings/providers/settings_provider.dart';
 
 void main() async {
@@ -16,7 +18,6 @@ void main() async {
   );
 }
 
-// Single router for whole application
 final _router = AppRouter.createRouter();
 
 class MyApp extends ConsumerWidget {
@@ -33,9 +34,12 @@ class MyApp extends ConsumerWidget {
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
       locale: Locale(settings.language),
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ru'),
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
     );
   }

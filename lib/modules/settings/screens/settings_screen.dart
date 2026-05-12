@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_tracker/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/modules/settings/providers/settings_provider.dart';
 
@@ -7,50 +8,33 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final settings = ref.watch(settingsProvider);
     final notifier = ref.read(settingsProvider.notifier);
     final theme = Theme.of(context);
-
-    // Доступные дни для уведомлений
     const availableDays = [1, 2, 3, 5, 7, 14];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text(l.settings, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-
-          // ─── NOTIFICATIONS ───────────────────────────────────────
-          _SectionHeader(title: 'Notifications'),
+          _SectionHeader(title: l.notifications),
           const SizedBox(height: 8),
-
-          // Главный тоггл уведомлений
           _SettingsCard(
             child: SwitchListTile(
               value: settings.notificationsEnabled,
               onChanged: notifier.toggleNotifications,
-              title: const Text(
-                'Enable notifications',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              subtitle: const Text('Get alerts before food expires'),
+              title: Text(l.enableNotifications, style: const TextStyle(fontWeight: FontWeight.w500)),
+              subtitle: Text(l.getAlertsBeforeExpiry),
               secondary: Icon(
-                settings.notificationsEnabled
-                    ? Icons.notifications_active_outlined
-                    : Icons.notifications_off_outlined,
-                color: settings.notificationsEnabled
-                    ? theme.colorScheme.primary
-                    : Colors.grey,
+                settings.notificationsEnabled ? Icons.notifications_active_outlined : Icons.notifications_off_outlined,
+                color: settings.notificationsEnabled ? theme.colorScheme.primary : Colors.grey,
               ),
             ),
           ),
-
-          // Чипсы — за сколько дней уведомлять
           if (settings.notificationsEnabled) ...[
             const SizedBox(height: 12),
             _SettingsCard(
@@ -61,44 +45,23 @@ class SettingsScreen extends ConsumerWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(
-                          Icons.schedule_outlined,
-                          size: 20,
-                          color: theme.colorScheme.primary,
-                        ),
+                        Icon(Icons.schedule_outlined, size: 20, color: theme.colorScheme.primary),
                         const SizedBox(width: 8),
-                        const Text(
-                          'Notify me before expiry',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                          ),
-                        ),
+                        Text(l.notifyBeforeExpiry, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      'Select one or more options',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: theme.colorScheme.onSurface.withOpacity(0.5),
-                      ),
-                    ),
+                    Text(l.selectOptions, style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface.withOpacity(0.5))),
                     const SizedBox(height: 12),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
                       children: availableDays.map((day) {
-                        final isSelected =
-                        settings.notificationDaysBefore.contains(day);
+                        final isSelected = settings.notificationDaysBefore.contains(day);
                         return FilterChip(
                           label: Text(
-                            day == 1 ? '1 day' : '$day days',
-                            style: TextStyle(
-                              fontWeight: isSelected
-                                  ? FontWeight.w600
-                                  : FontWeight.normal,
-                            ),
+                            day == 1 ? l.oneDay : l.nDays(day),
+                            style: TextStyle(fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal),
                           ),
                           selected: isSelected,
                           onSelected: (_) => notifier.toggleDay(day),
@@ -106,27 +69,18 @@ class SettingsScreen extends ConsumerWidget {
                       }).toList(),
                     ),
                     const SizedBox(height: 8),
-                    // Показываем выбранные дни
                     Text(
-                      'Selected: ${settings.notificationDaysBefore.map((d) => d == 1 ? '1 day' : '$d days').join(', ')}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      l.selected(settings.notificationDaysBefore.map((d) => d == 1 ? l.oneDay : l.nDays(d)).join(', ')),
+                      style: TextStyle(fontSize: 12, color: theme.colorScheme.primary, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
               ),
             ),
           ],
-
           const SizedBox(height: 20),
-
-          // ─── LANGUAGE ─────────────────────────────────────────────
-          _SectionHeader(title: 'Language'),
+          _SectionHeader(title: l.language),
           const SizedBox(height: 8),
-
           _SettingsCard(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -135,54 +89,29 @@ class SettingsScreen extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(
-                        Icons.language_outlined,
-                        size: 20,
-                        color: theme.colorScheme.primary,
-                      ),
+                      Icon(Icons.language_outlined, size: 20, color: theme.colorScheme.primary),
                       const SizedBox(width: 8),
-                      const Text(
-                        'App language',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                        ),
-                      ),
+                      Text(l.appLanguage, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
                     ],
                   ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Expanded(
-                        child: _LangButton(
-                          label: '🇬🇧  English',
-                          isSelected: settings.language == 'en',
-                          onTap: () => notifier.setLanguage('en'),
-                        ),
-                      ),
+                      Expanded(child: _LangButton(label: '🇬🇧  English', isSelected: settings.language == 'en', onTap: () => notifier.setLanguage('en'))),
                       const SizedBox(width: 12),
-                      Expanded(
-                        child: _LangButton(
-                          label: '🇷🇺  Русский',
-                          isSelected: settings.language == 'ru',
-                          onTap: () => notifier.setLanguage('ru'),
-                        ),
-                      ),
+                      Expanded(child: _LangButton(label: '🇷🇺  Русский', isSelected: settings.language == 'ru', onTap: () => notifier.setLanguage('ru'))),
                     ],
                   ),
                 ],
               ),
             ),
           ),
-
           const SizedBox(height: 32),
         ],
       ),
     );
   }
 }
-
-// ─── Вспомогательные виджеты ──────────────────────────────────────────────────
 
 class _SectionHeader extends StatelessWidget {
   final String title;
@@ -192,12 +121,7 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title.toUpperCase(),
-      style: TextStyle(
-        fontSize: 11,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 1.2,
-        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
-      ),
+      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 1.2, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.45)),
     );
   }
 }
@@ -212,16 +136,8 @@ class _SettingsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.15),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.15)),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, 2))],
       ),
       child: child,
     );
@@ -233,11 +149,7 @@ class _LangButton extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _LangButton({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
+  const _LangButton({required this.label, required this.isSelected, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -248,26 +160,12 @@ class _LangButton extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected
-              ? theme.colorScheme.primary
-              : theme.colorScheme.surfaceVariant.withOpacity(0.5),
+          color: isSelected ? theme.colorScheme.primary : theme.colorScheme.surfaceVariant.withOpacity(0.5),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: isSelected
-                ? theme.colorScheme.primary
-                : theme.colorScheme.outline.withOpacity(0.2),
-          ),
+          border: Border.all(color: isSelected ? theme.colorScheme.primary : theme.colorScheme.outline.withOpacity(0.2)),
         ),
         child: Center(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? Colors.white : theme.colorScheme.onSurface,
-              fontWeight:
-              isSelected ? FontWeight.w600 : FontWeight.normal,
-              fontSize: 14,
-            ),
-          ),
+          child: Text(label, style: TextStyle(color: isSelected ? Colors.white : theme.colorScheme.onSurface, fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal, fontSize: 14)),
         ),
       ),
     );
