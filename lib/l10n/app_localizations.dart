@@ -823,6 +823,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'«{name}» will be removed from the inventory.'**
   String willBeRemovedFromInventory(String name);
+
+  /// No description provided for @storageRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage recommendations'**
+  String get storageRecommendations;
+
+  /// No description provided for @chooseStorageCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose storage condition:'**
+  String get chooseStorageCondition;
+
+  /// No description provided for @applyRecommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get applyRecommendation;
+
+  /// No description provided for @skipSetManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip, I\'ll set manually'**
+  String get skipSetManually;
+
+  /// No description provided for @recommendedDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended: {days}'**
+  String recommendedDays(String days);
+
+  /// No description provided for @getTipAfterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap 💡 after entering name to get expiry recommendation'**
+  String get getTipAfterName;
+
+  /// No description provided for @getStorageRecommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'Get storage recommendation'**
+  String get getStorageRecommendation;
+
+  /// No description provided for @daysUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get daysUnit;
+
+  /// No description provided for @locationFridgeShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Fridge'**
+  String get locationFridgeShort;
+
+  /// No description provided for @locationFreezerShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Freezer'**
+  String get locationFreezerShort;
+
+  /// No description provided for @locationPantryShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Pantry'**
+  String get locationPantryShort;
+
+  /// No description provided for @locationRoomShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Room temp'**
+  String get locationRoomShort;
+
+  /// No description provided for @stateWhole.
+  ///
+  /// In en, this message translates to:
+  /// **'whole'**
+  String get stateWhole;
+
+  /// No description provided for @stateCut.
+  ///
+  /// In en, this message translates to:
+  /// **'cut'**
+  String get stateCut;
+
+  /// No description provided for @stateRaw.
+  ///
+  /// In en, this message translates to:
+  /// **'raw'**
+  String get stateRaw;
+
+  /// No description provided for @stateCooked.
+  ///
+  /// In en, this message translates to:
+  /// **'cooked'**
+  String get stateCooked;
+
+  /// No description provided for @stateOpened.
+  ///
+  /// In en, this message translates to:
+  /// **'opened'**
+  String get stateOpened;
+
+  /// No description provided for @stateUnopened.
+  ///
+  /// In en, this message translates to:
+  /// **'unopened'**
+  String get stateUnopened;
+
+  /// No description provided for @stateFresh.
+  ///
+  /// In en, this message translates to:
+  /// **'fresh'**
+  String get stateFresh;
 }
 
 class _AppLocalizationsDelegate

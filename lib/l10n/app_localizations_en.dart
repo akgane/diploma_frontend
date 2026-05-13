@@ -401,4 +401,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String willBeRemovedFromInventory(String name) {
     return '«$name» will be removed from the inventory.';
   }
+
+  @override
+  String get storageRecommendations => 'Storage recommendations';
+
+  @override
+  String get chooseStorageCondition => 'Choose storage condition:';
+
+  @override
+  String get applyRecommendation => 'Apply';
+
+  @override
+  String get skipSetManually => 'Skip, I\'ll set manually';
+
+  @override
+  String recommendedDays(String days) {
+    return 'Recommended: $days';
+  }
+
+  @override
+  String get getTipAfterName =>
+      'Tap 💡 after entering name to get expiry recommendation';
+
+  @override
+  String get getStorageRecommendation => 'Get storage recommendation';
+
+  @override
+  String get daysUnit => 'days';
+
+  @override
+  String get locationFridgeShort => 'Fridge';
+
+  @override
+  String get locationFreezerShort => 'Freezer';
+
+  @override
+  String get locationPantryShort => 'Pantry';
+
+  @override
+  String get locationRoomShort => 'Room temp';
+
+  @override
+  String get stateWhole => 'whole';
+
+  @override
+  String get stateCut => 'cut';
+
+  @override
+  String get stateRaw => 'raw';
+
+  @override
+  String get stateCooked => 'cooked';
+
+  @override
+  String get stateOpened => 'opened';
+
+  @override
+  String get stateUnopened => 'unopened';
+
+  @override
+  String get stateFresh => 'fresh';
 }
