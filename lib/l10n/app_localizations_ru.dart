@@ -402,4 +402,64 @@ class AppLocalizationsRu extends AppLocalizations {
   String willBeRemovedFromInventory(String name) {
     return '«$name» будет удалён из холодильника.';
   }
+
+  @override
+  String get storageRecommendations => 'Рекомендации по хранению';
+
+  @override
+  String get chooseStorageCondition => 'Выберите условие хранения:';
+
+  @override
+  String get applyRecommendation => 'Применить';
+
+  @override
+  String get skipSetManually => 'Пропустить, введу вручную';
+
+  @override
+  String recommendedDays(String days) {
+    return 'Рекомендуется: $days';
+  }
+
+  @override
+  String get getTipAfterName =>
+      'Нажми 💡 после ввода названия для рекомендации срока';
+
+  @override
+  String get getStorageRecommendation => 'Получить рекомендацию хранения';
+
+  @override
+  String get daysUnit => 'дней';
+
+  @override
+  String get locationFridgeShort => 'Холодильник';
+
+  @override
+  String get locationFreezerShort => 'Морозильник';
+
+  @override
+  String get locationPantryShort => 'Кладовая';
+
+  @override
+  String get locationRoomShort => 'Комнатная темп.';
+
+  @override
+  String get stateWhole => 'целый';
+
+  @override
+  String get stateCut => 'нарезанный';
+
+  @override
+  String get stateRaw => 'сырой';
+
+  @override
+  String get stateCooked => 'приготовленный';
+
+  @override
+  String get stateOpened => 'открытый';
+
+  @override
+  String get stateUnopened => 'закрытый';
+
+  @override
+  String get stateFresh => 'свежий';
 }
