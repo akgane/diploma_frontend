@@ -10,6 +10,27 @@ final authApiProvider = Provider<AuthApi>((ref) {
   return AuthApi(dio);
 });
 
+// Провайдер текущего пользователя
+final currentUserProvider = AsyncNotifierProvider<CurrentUserNotifier, UserResponse?>(CurrentUserNotifier.new);
+
+class CurrentUserNotifier extends AsyncNotifier<UserResponse?> {
+  @override
+  Future<UserResponse?> build() async {
+    final token = await TokenStorage.read();
+    if (token == null) return null;
+    final api = ref.read(authApiProvider);
+    return await api.getMe();
+  }
+
+  Future<void> updateAccountType(String accountType) async {
+    final api = ref.read(authApiProvider);
+    await api.updateAccountType(accountType);
+    state = AsyncData(state.value?.copyWith(accountType: accountType));
+  }
+
+  void clear() => state = const AsyncData(null);
+}
+
 class AuthNotifier extends AsyncNotifier<bool> {
   @override
   Future<bool> build() async {
@@ -23,9 +44,8 @@ class AuthNotifier extends AsyncNotifier<bool> {
       final api = ref.read(authApiProvider);
       final response = await api.login(LoginRequest(email: email, password: password));
       await TokenStorage.save(response.accessToken);
-
       await ref.read(fcmServiceProvider).registerToken();
-
+      await ref.read(currentUserProvider.notifier).build();
       return true;
     });
   }
@@ -36,15 +56,15 @@ class AuthNotifier extends AsyncNotifier<bool> {
       final api = ref.read(authApiProvider);
       final response = await api.register(RegisterRequest(name: name, email: email, password: password));
       await TokenStorage.save(response.accessToken);
-      
       await ref.read(fcmServiceProvider).registerToken();
-
+      await ref.read(currentUserProvider.notifier).build();
       return true;
     });
   }
 
   Future<void> logout() async {
     await TokenStorage.delete();
+    ref.read(currentUserProvider.notifier).clear();
     state = const AsyncData(false);
   }
 }

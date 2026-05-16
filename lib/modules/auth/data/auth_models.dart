@@ -33,3 +33,52 @@ class TokenResponse{
     accessToken: json['access_token']
   );
 }
+class UpdateAccountTypeRequest {
+  final String accountType;
+
+  UpdateAccountTypeRequest({required this.accountType});
+
+  Map<String, dynamic> toJson() => {
+    'account_type': accountType,
+  };
+}
+
+class UserResponse {
+  final String id;
+  final String name;
+  final String email;
+  final String accountType;
+  final String? fcmToken;
+  final List<double> notificationDaysBefore;
+  final DateTime createdAt;
+
+  UserResponse({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.accountType,
+    this.fcmToken,
+    required this.notificationDaysBefore,
+    required this.createdAt,
+  });
+
+  factory UserResponse.fromJson(Map<String, dynamic> json) => UserResponse(
+    id: json['id'],
+    name: json['name'],
+    email: json['email'],
+    accountType: json['account_type'] ?? 'personal',
+    fcmToken: json['fcm_token'],
+    notificationDaysBefore: (json['notification_days_before'] as List).map((e) => (e as num).toDouble()).toList(),
+    createdAt: DateTime.parse(json['created_at']),
+  );
+
+  UserResponse copyWith({String? accountType}) => UserResponse(
+    id: id,
+    name: name,
+    email: email,
+    accountType: accountType ?? this.accountType,
+    fcmToken: fcmToken,
+    notificationDaysBefore: notificationDaysBefore,
+    createdAt: createdAt,
+  );
+}

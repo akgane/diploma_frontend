@@ -461,4 +461,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stateFresh => 'fresh';
+
+  @override
+  String get accountType => 'Account type';
+
+  @override
+  String get businessAccount => 'Business account';
+
+  @override
+  String get businessAccountSubtitle => 'Stop list mode for restaurants';
+
+  @override
+  String get stopList => 'Stop List';
+
+  @override
+  String get addDish => 'Add dish';
+
+  @override
+  String get dishName => 'Dish name';
+
+  @override
+  String get addIngredient => 'Add ingredient...';
+
+  @override
+  String get noDishesYet => 'No dishes yet';
+
+  @override
+  String get noDishesSubtitle =>
+      'Add your menu dishes to track ingredient availability';
 }
