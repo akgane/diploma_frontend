@@ -462,4 +462,32 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get stateFresh => 'свежий';
+
+  @override
+  String get accountType => 'Тип аккаунта';
+
+  @override
+  String get businessAccount => 'Бизнес аккаунт';
+
+  @override
+  String get businessAccountSubtitle => 'Режим стоп-листа для ресторанов';
+
+  @override
+  String get stopList => 'Стоп-лист';
+
+  @override
+  String get addDish => 'Добавить блюдо';
+
+  @override
+  String get dishName => 'Название блюда';
+
+  @override
+  String get addIngredient => 'Добавить ингредиент...';
+
+  @override
+  String get noDishesYet => 'Блюд пока нет';
+
+  @override
+  String get noDishesSubtitle =>
+      'Добавьте блюда из меню для отслеживания наличия ингредиентов';
 }

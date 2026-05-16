@@ -22,4 +22,16 @@ class AuthApi {
     );
     return TokenResponse.fromJson(response.data);
   }
+  Future<UserResponse> getMe() async {
+    final response = await _dio.get('/api/v1/auth/me');
+    return UserResponse.fromJson(response.data);
+  }
+
+  Future<void> updateAccountType(String accountType) async {
+    await _dio.patch(
+      '/api/v1/auth/account-type',
+      data: UpdateAccountTypeRequest(accountType: accountType).toJson(),
+    );
+  }
+
 }

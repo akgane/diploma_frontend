@@ -154,5 +154,15 @@
   "stateCooked": "приготовленный",
   "stateOpened": "открытый",
   "stateUnopened": "закрытый",
-  "stateFresh": "свежий"
+  "stateFresh": "свежий",
+  "accountType": "Тип аккаунта",
+    "businessAccount": "Бизнес аккаунт",
+    "businessAccountSubtitle": "Режим стоп-листа для ресторанов",
+    "stopList": "Стоп-лист",
+    "addDish": "Добавить блюдо",
+    "dishName": "Название блюда",
+    "ingredients": "Ингредиенты",
+    "addIngredient": "Добавить ингредиент...",
+    "noDishesYet": "Блюд пока нет",
+    "noDishesSubtitle": "Добавьте блюда из меню для отслеживания наличия ингредиентов"
 }

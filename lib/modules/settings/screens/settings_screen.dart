@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_tracker/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/modules/settings/providers/settings_provider.dart';
+import 'package:food_tracker/modules/auth/providers/auth_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -105,6 +106,31 @@ class SettingsScreen extends ConsumerWidget {
                 ],
               ),
             ),
+          ),
+          const SizedBox(height: 20),
+          _SectionHeader(title: l.accountType), // добавим ключ локализации
+          const SizedBox(height: 8),
+          ref.watch(currentUserProvider).when(
+            data: (user) => _SettingsCard(
+              child: SwitchListTile(
+                value: user?.accountType == 'business',
+                onChanged: (val) async {
+                  final newType = val ? 'business' : 'personal';
+                  await ref.read(currentUserProvider.notifier).updateAccountType(newType);
+                },
+                title: Text(
+                  l.businessAccount,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                subtitle: Text(l.businessAccountSubtitle),
+                secondary: Icon(
+                  Icons.store_outlined,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ),
+            loading: () => const CircularProgressIndicator(),
+            error: (_, __) => const SizedBox(),
           ),
           const SizedBox(height: 32),
         ],

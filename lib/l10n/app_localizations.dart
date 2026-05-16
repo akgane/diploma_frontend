@@ -937,6 +937,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'fresh'**
   String get stateFresh;
+
+  /// No description provided for @accountType.
+  ///
+  /// In en, this message translates to:
+  /// **'Account type'**
+  String get accountType;
+
+  /// No description provided for @businessAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Business account'**
+  String get businessAccount;
+
+  /// No description provided for @businessAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop list mode for restaurants'**
+  String get businessAccountSubtitle;
+
+  /// No description provided for @stopList.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop List'**
+  String get stopList;
+
+  /// No description provided for @addDish.
+  ///
+  /// In en, this message translates to:
+  /// **'Add dish'**
+  String get addDish;
+
+  /// No description provided for @dishName.
+  ///
+  /// In en, this message translates to:
+  /// **'Dish name'**
+  String get dishName;
+
+  /// No description provided for @addIngredient.
+  ///
+  /// In en, this message translates to:
+  /// **'Add ingredient...'**
+  String get addIngredient;
+
+  /// No description provided for @noDishesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No dishes yet'**
+  String get noDishesYet;
+
+  /// No description provided for @noDishesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your menu dishes to track ingredient availability'**
+  String get noDishesSubtitle;
 }
 
 class _AppLocalizationsDelegate

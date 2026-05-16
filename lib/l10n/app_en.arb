@@ -154,5 +154,15 @@
   "stateCooked": "cooked",
   "stateOpened": "opened",
   "stateUnopened": "unopened",
-  "stateFresh": "fresh"
+  "stateFresh": "fresh",
+  "accountType": "Account type",
+    "businessAccount": "Business account",
+    "businessAccountSubtitle": "Stop list mode for restaurants",
+    "stopList": "Stop List",
+    "addDish": "Add dish",
+    "dishName": "Dish name",
+    "ingredients": "Ingredients",
+    "addIngredient": "Add ingredient...",
+    "noDishesYet": "No dishes yet",
+    "noDishesSubtitle": "Add your menu dishes to track ingredient availability"
 }
