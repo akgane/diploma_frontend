@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/modules/inventory/providers/inventory_provider.dart';
 import 'package:food_tracker/modules/recipes/data/recipes_models.dart';
 import 'package:food_tracker/modules/recipes/providers/recipes_provider.dart';
+import 'package:food_tracker/modules/settings/providers/settings_provider.dart';
 import 'package:food_tracker/modules/shopping_list/data/shopping_list_models.dart';
 import 'package:food_tracker/modules/shopping_list/providers/shopping_list_provider.dart';
 
@@ -17,7 +18,8 @@ class RecipeDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final detailAsync = ref.watch(recipeDetailProvider(recipe.spoonacularId));
+    final settings = ref.watch(settingsProvider);
+    final detailAsync = ref.watch(recipeDetailProvider((recipe.spoonacularId, settings.language)));
 
     return Scaffold(
       body: detailAsync.when(
@@ -27,7 +29,7 @@ class RecipeDetailScreen extends ConsumerWidget {
           const SizedBox(height: 12),
           Text(l.couldNotLoadRecipe),
           const SizedBox(height: 16),
-          ElevatedButton(onPressed: () => ref.invalidate(recipeDetailProvider(recipe.spoonacularId)), child: Text(l.retry)),
+          ElevatedButton(onPressed: () => ref.invalidate(recipeDetailProvider((recipe.spoonacularId, settings.language))), child: Text(l.retry)),
         ])),
         data: (detail) => _RecipeDetailView(detail: detail),
       ),

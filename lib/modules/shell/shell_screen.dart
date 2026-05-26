@@ -34,8 +34,10 @@ class _ShellScreenState extends ConsumerState<ShellScreen> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final userAsync = ref.watch(currentUserProvider);
-    final isBusinesss = userAsync.whenData((u) => u?.accountType).value == 'business';
+    final isBusinesss = ref.watch(currentUserProvider).maybeWhen(
+      data: (user) => user?.accountType == 'business',
+      orElse: () => false,
+    );
 
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _screens),

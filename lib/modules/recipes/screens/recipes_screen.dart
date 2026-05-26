@@ -14,8 +14,10 @@ class RecipesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(currentUserProvider);
-    final accountType = userAsync.value?.accountType ?? 'personal';
-
+    final accountType = userAsync.maybeWhen(
+      data: (user) => user?.accountType ?? 'personal',
+      orElse: () => 'personal',
+    );
     if (accountType == 'business') {
       return const _BusinessMenuScreen();
     }
