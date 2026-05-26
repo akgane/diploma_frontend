@@ -37,7 +37,7 @@ class RecipeIngredient {
   factory RecipeIngredient.fromJson(Map<String, dynamic> json) =>
       RecipeIngredient(
         id: (json['id'] as num?)?.toInt() ?? 0,
-        name: (json['name'] ?? '').toString(),
+        name: _capitalize((json['name'] ?? '').toString()),
         amount: (json['amount'] as num?)?.toDouble() ?? 0.0,
         unit: (json['unit'] ?? '').toString(),
       );
@@ -92,4 +92,9 @@ class RecipeDetail {
         .map(RecipeStep.fromJson)
         .toList(),
   );
+}
+
+String _capitalize(String s) {
+  if (s.isEmpty) return s;
+  return s[0].toUpperCase() + s.substring(1);
 }
