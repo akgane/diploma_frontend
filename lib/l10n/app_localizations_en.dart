@@ -99,8 +99,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fridgeEmpty => 'Fridge is empty';
 
   @override
-  String get addProductsHint =>
-      'Add products using the button\nat the bottom of the screen';
+  String get addProductsHint => 'Add products using the button\nat the bottom of the screen';
 
   @override
   String get downloadError => 'Download error';
@@ -239,8 +238,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noRecommendationsYet => 'No recommendations yet';
 
   @override
-  String get addProductsForRecipes =>
-      'Add products to inventory to see recipe recommendations.';
+  String get addProductsForRecipes => 'Add products to inventory to see recipe recommendations.';
 
   @override
   String get couldNotLoadRecipes => 'Could not load recipes';
@@ -333,8 +331,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clearDoneItems => 'Clear done items?';
 
   @override
-  String get clearDoneConfirm =>
-      'All checked items will be removed from the list.';
+  String get clearDoneConfirm => 'All checked items will be removed from the list.';
 
   @override
   String get clear => 'Clear';
@@ -420,8 +417,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get getTipAfterName =>
-      'Tap 💡 after entering name to get expiry recommendation';
+  String get getTipAfterName => 'Tap 💡 after entering name to get expiry recommendation';
 
   @override
   String get getStorageRecommendation => 'Get storage recommendation';
@@ -487,6 +483,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noDishesYet => 'No dishes yet';
 
   @override
-  String get noDishesSubtitle =>
-      'Add your menu dishes to track ingredient availability';
+  String get noDishesSubtitle => 'Add your menu dishes to track ingredient availability';
 }

@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'diploma-37e65.firebasestorage.app',
     measurementId: 'G-J7L1VJ1KVJ',
   );
+
 }

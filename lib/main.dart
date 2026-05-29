@@ -4,12 +4,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_tracker/core/fcm/fcm_provider.dart';
 import 'package:food_tracker/core/router/app_router.dart';
+import 'package:food_tracker/firebase_options.dart';
 import 'package:food_tracker/l10n/app_localizations.dart';
 import 'package:food_tracker/modules/settings/providers/settings_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     const ProviderScope(
