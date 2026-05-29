@@ -99,8 +99,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get fridgeEmpty => 'Холодильник пуст';
 
   @override
-  String get addProductsHint =>
-      'Добавьте продукты с помощью\nкнопки внизу экрана';
+  String get addProductsHint => 'Добавьте продукты с помощью\nкнопки внизу экрана';
 
   @override
   String get downloadError => 'Ошибка загрузки';
@@ -239,8 +238,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noRecommendationsYet => 'Пока нет рекомендаций';
 
   @override
-  String get addProductsForRecipes =>
-      'Добавьте продукты в холодильник, чтобы увидеть рецепты.';
+  String get addProductsForRecipes => 'Добавьте продукты в холодильник, чтобы увидеть рецепты.';
 
   @override
   String get couldNotLoadRecipes => 'Не удалось загрузить рецепты';
@@ -333,8 +331,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get clearDoneItems => 'Очистить купленные?';
 
   @override
-  String get clearDoneConfirm =>
-      'Все отмеченные товары будут удалены из списка.';
+  String get clearDoneConfirm => 'Все отмеченные товары будут удалены из списка.';
 
   @override
   String get clear => 'Очистить';
@@ -352,8 +349,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get enableNotifications => 'Включить уведомления';
 
   @override
-  String get getAlertsBeforeExpiry =>
-      'Получайте уведомления до истечения срока';
+  String get getAlertsBeforeExpiry => 'Получайте уведомления до истечения срока';
 
   @override
   String get notifyBeforeExpiry => 'Уведомлять до истечения срока';
@@ -421,8 +417,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get getTipAfterName =>
-      'Нажми 💡 после ввода названия для рекомендации срока';
+  String get getTipAfterName => 'Нажми 💡 после ввода названия для рекомендации срока';
 
   @override
   String get getStorageRecommendation => 'Получить рекомендацию хранения';
@@ -488,6 +483,5 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noDishesYet => 'Блюд пока нет';
 
   @override
-  String get noDishesSubtitle =>
-      'Добавьте блюда из меню для отслеживания наличия ингредиентов';
+  String get noDishesSubtitle => 'Добавьте блюда из меню для отслеживания наличия ингредиентов';
 }
